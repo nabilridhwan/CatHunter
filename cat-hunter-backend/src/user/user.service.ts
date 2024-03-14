@@ -1,5 +1,5 @@
 import {Injectable} from '@nestjs/common';
-import {CreateUserDto} from "../../../@cathunt/types/src/lib/user.dto";
+import { CreateUserDto } from '@cat-hunter/types';
 
 @Injectable()
 export class UserService {

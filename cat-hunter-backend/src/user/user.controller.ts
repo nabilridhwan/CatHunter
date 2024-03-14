@@ -3,7 +3,7 @@ import {UserService} from './user.service';
 import {AuthGuard} from "../auth.guard";
 import {UserEmail} from "../user-email.decorator";
 import {ZodValidationPipe} from "nestjs-zod";
-import {CreateUserDto} from "../../../@cathunt/types/src/lib/user.dto";
+import {CreateUserDto} from '@cat-hunter/types';
 
 @Controller()
 export class UserController {
@@ -19,7 +19,6 @@ export class UserController {
    * @param userEmail - the email of the user from the JWT token
    */
   create(@Body() createUserDto: CreateUserDto, @UserEmail() userEmail: string) {
-
     return this.userService.create(createUserDto, userEmail);
   }
 
