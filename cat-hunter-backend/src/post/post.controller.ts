@@ -1,9 +1,22 @@
-import {Controller, Get, Post, Body, Patch, Param, Delete, UsePipes, Query} from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  UsePipes,
+  Query,
+  UseGuards,
+  NotFoundException
+} from '@nestjs/common';
 import {PostService} from './post.service';
 import {CreatePostDto, UpdatePostDto} from "@cat-hunter/types";
 import {UseZodGuard, ZodValidationPipe} from "nestjs-zod";
 import {GetAllPostsDto} from '@cat-hunter/types';
 import {UserEmail} from "../user-email.decorator";
+import {AuthGuard} from "../auth.guard";
 
 @Controller()
 export class PostController {
@@ -11,6 +24,7 @@ export class PostController {
   }
 
   @Post()
+  @UseGuards(AuthGuard)
   @UsePipes(ZodValidationPipe)
   create(@Body() createPostDto: CreatePostDto, @UserEmail() userEmail: string) {
     return this.postService.createPost(createPostDto, userEmail);
@@ -19,7 +33,7 @@ export class PostController {
   @UseZodGuard('query', GetAllPostsDto)
   @Get()
   getAllPosts(@Query() options: GetAllPostsDto) {
-    return this.postService.findAll(options);
+    return this.postService.getAllPosts(options);
   }
 
   @Get(':id')
@@ -29,12 +43,18 @@ export class PostController {
 
   @Patch(':id')
   @UsePipes(ZodValidationPipe)
+  @UseGuards(AuthGuard)
   update(@Param('id') id: string, @Body() updatePostDto: UpdatePostDto, @UserEmail() userEmail: string) {
     return this.postService.editPost(id, updatePostDto, userEmail);
   }
 
   @Delete(':id')
+  @UseGuards(AuthGuard)
   remove(@Param('id') id: string, @UserEmail() userEmail: string) {
-    return this.postService.deletePost(id, userEmail);
+    try {
+      return this.postService.deletePost(id, userEmail);
+    } catch (e) {
+      throw new NotFoundException(e.message)
+    }
   }
 }

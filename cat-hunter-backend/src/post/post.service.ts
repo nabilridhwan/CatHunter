@@ -19,14 +19,14 @@ export class PostService {
         comments: 0,
         user: {
           connect: {
-            user_id: email
+            email: email
           }
         }
       }
     })
   }
 
-  async findAll(options: GetAllPostsDto) {
+  async getAllPosts(options: GetAllPostsDto) {
     // TODO: Implement page cursor pagination
     const filter: Prisma.PostWhereInput = {};
 
@@ -41,7 +41,10 @@ export class PostService {
     }
 
     return this.prisma.post.findMany({
-      where: filter
+      where: filter,
+      orderBy: {
+        created_at: 'desc'
+      },
     })
   }
 
