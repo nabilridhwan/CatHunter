@@ -1,1 +1,3 @@
-export * from './lib/api';
+export * from './lib/getAxiosInstance';
+
+export * from './lib/user.api';
