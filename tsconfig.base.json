@@ -15,6 +15,7 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
+      "@cat-hunter/api": ["@cathunt/api/src/index.ts"],
       "@cat-hunter/types": ["@cathunt/types/src/index.ts"]
     }
   },

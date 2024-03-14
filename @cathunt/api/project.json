@@ -1,0 +1,20 @@
+{
+  "name": "api",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "@cathunt/api/src",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/@cathunt/api",
+        "tsConfig": "@cathunt/api/tsconfig.lib.json",
+        "packageJson": "@cathunt/api/package.json",
+        "main": "@cathunt/api/src/index.ts",
+        "assets": ["@cathunt/api/*.md"]
+      }
+    }
+  },
+  "tags": []
+}
