@@ -13,12 +13,12 @@ export class CommentController {
   @Post(":post_id")
   @UseGuards(AuthGuard)
   @UsePipes(ZodValidationPipe)
-  create(@Param() post_id: string, @Body() createCommentDto: CreateCommentDto, @UserEmail() userEmail: string) {
+  create(@Param("post_id") post_id: string, @Body() createCommentDto: CreateCommentDto, @UserEmail() userEmail: string) {
     return this.commentService.createComment(post_id, createCommentDto, userEmail);
   }
 
   @Get(":post_id")
-  findAll(@Param() post_id: string) {
+  findAll(@Param("post_id") post_id: string) {
     return this.commentService.findCommentsByPostId(post_id);
   }
 
@@ -31,7 +31,8 @@ export class CommentController {
 
   @Delete(':comment_id')
   @UseGuards(AuthGuard)
-  remove(@Param('comment_id') comment_id: string, @UserEmail() userEmail: string) {
+  async remove(@Param('comment_id') comment_id: string, @UserEmail() userEmail: string) {
+    console.log(comment_id, userEmail)
     return this.commentService.deleteComment(comment_id, userEmail);
   }
 }

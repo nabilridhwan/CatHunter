@@ -43,7 +43,15 @@ export class CommentService {
     return this.prisma.postComments.findMany({
       where: {
         post: {
-          post_id: post_id
+          post_id: post_id,
+        }
+      },
+      include: {
+        user: {
+          select: {
+            username: true,
+            name: true
+          }
         }
       }
     })
@@ -63,14 +71,27 @@ export class CommentService {
     })
   }
 
-  deleteComment(id: string, email: string) {
+  async deleteComment(id: string, email: string) {
     return this.prisma.$transaction(async (prisma) => {
+
+      // Allow the user to delete the comment if they are the owner of the comment or the owner of the post
       const comment = await prisma.postComments.delete({
         where: {
           comment_id: id,
-          user: {
-            email: email
-          }
+          OR: [
+            {
+              user: {
+                email: email
+              }
+            },
+            {
+              post: {
+                user: {
+                  email
+                }
+              }
+            }
+          ]
         }
       })
 
