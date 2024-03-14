@@ -1,0 +1,8 @@
+{
+  "name": "cat-hunter",
+  "$schema": "../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "cat-hunter/src",
+  "projectType": "application",
+  "targets": {},
+  "tags": []
+}

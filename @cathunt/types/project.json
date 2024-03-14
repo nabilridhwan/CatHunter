@@ -1,0 +1,20 @@
+{
+  "name": "types",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "@cathunt/types/src",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/@cathunt/types",
+        "tsConfig": "@cathunt/types/tsconfig.lib.json",
+        "packageJson": "@cathunt/types/package.json",
+        "main": "@cathunt/types/src/index.ts",
+        "assets": ["@cathunt/types/*.md"]
+      }
+    }
+  },
+  "tags": []
+}

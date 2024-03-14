@@ -1,0 +1,24 @@
+{
+  "name": "cat-hunter-backend",
+  "$schema": "../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "cat-hunter-backend/src",
+  "projectType": "application",
+  "targets": {
+    "serve": {
+      "executor": "@nx/js:node",
+      "defaultConfiguration": "development",
+      "options": {
+        "buildTarget": "cat-hunter-backend:build"
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "cat-hunter-backend:build:development"
+        },
+        "production": {
+          "buildTarget": "cat-hunter-backend:build:production"
+        }
+      }
+    }
+  },
+  "tags": []
+}
