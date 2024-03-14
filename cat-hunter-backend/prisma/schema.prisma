@@ -38,7 +38,7 @@ model Post {
   // Date
   created_at   DateTime       @default(now())
   updated_at   DateTime       @updatedAt
-  user         User           @relation(fields: [user_id], references: [user_id])
+  user         User           @relation(fields: [user_id], references: [user_id], onDelete: Cascade, onUpdate: Cascade)
   PostComments PostComments[]
   PostLike     PostLikes[]
 
@@ -52,8 +52,8 @@ model PostComments {
   comment    String
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
-  user       User     @relation(fields: [user_id], references: [user_id])
-  post       Post     @relation(fields: [post_id], references: [post_id])
+  user       User     @relation(fields: [user_id], references: [user_id], onDelete: Cascade, onUpdate: Cascade)
+  post       Post     @relation(fields: [post_id], references: [post_id], onDelete: Cascade, onUpdate: Cascade)
 
   @@map("post_comments")
 }
@@ -63,8 +63,8 @@ model PostLikes {
   post_id     String
   user_id     String
   created_at  DateTime @default(now())
-  user        User     @relation(fields: [user_id], references: [user_id])
-  post        Post     @relation(fields: [post_id], references: [post_id])
+  user        User     @relation(fields: [user_id], references: [user_id], onDelete: Cascade, onUpdate: Cascade)
+  post        Post     @relation(fields: [post_id], references: [post_id], onDelete: Cascade, onUpdate: Cascade)
 
   @@map("post_reaction")
 }
