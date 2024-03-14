@@ -8,8 +8,8 @@ export class AuthGuard implements CanActivate {
 
   public verifier = CognitoJwtVerifier.create({
     tokenUse: "access",
-    userPoolId: 'ap-southeast-1_MO91oKtAW', // Your user pool id here
-    clientId: '3g7kko47585j4kbia7j3di5h2l', // Your client id here
+    userPoolId: process.env.AWS_COGNITO_USER_POOL_ID,
+    clientId: process.env.AWS_COGNITO_CLIENT_ID,
   });
 
   private async validateToken(token: string) {
