@@ -15,7 +15,7 @@ import {UserService} from './user.service';
 import {AuthGuard} from "../auth.guard";
 import {UserEmail} from "../user-email.decorator";
 import {ZodValidationPipe} from "nestjs-zod";
-import {CreateUserDto} from '@cat-hunter/types';
+import {CreateUserDto, UpdateUserDto} from '@cat-hunter/types';
 
 @Controller()
 export class UserController {
@@ -67,18 +67,27 @@ export class UserController {
    * API Route to get the user details by id. Doesn't include sensitive information.
    * @param id
    */
-  findOne(@Param('id') id: string) {
-    return this.userService.findOne(+id);
+  async findOne(@Param('id') id: string) {
+    const u = await this.userService.findOne(id);
+    console.log(u)
+    return u;
   }
 
   @UseGuards(AuthGuard)
-  @Patch(':id')
-  update(@Param('id') id: string, @UserEmail() userEmail: string) {
-    return this.userService.update(+id, userEmail);
+  @UsePipes(ZodValidationPipe)
+  @Patch()
+  /**
+   * Update current user details
+   * @param updateUserDto
+   * @param userEmail
+   */
+  update(@Body() updateUserDto: UpdateUserDto, @UserEmail() userEmail: string) {
+    return this.userService.update(updateUserDto, userEmail);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.userService.remove(+id);
+  @UseGuards(AuthGuard)
+  @Delete()
+  remove(@UserEmail() userEmail: string) {
+    return this.userService.deleteUser(userEmail);
   }
 }

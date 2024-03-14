@@ -1,7 +1,8 @@
 import {ConflictException, Injectable, InternalServerErrorException} from '@nestjs/common';
-import {CreateUserDto} from '@cat-hunter/types';
+import {CreateUserDto, UpdateUserDto} from '@cat-hunter/types';
 import {PrismaService} from "../../prisma.service";
 import {PrismaClientKnownRequestError} from "@prisma/client/runtime/library";
+import {UserEmail} from "../user-email.decorator";
 
 @Injectable()
 export class UserService {
@@ -12,8 +13,7 @@ export class UserService {
   async create(createUserDto: CreateUserDto, email: string) {
     console.log(createUserDto, email)
     try {
-
-      const res = await this.prisma.user.create({
+      return this.prisma.user.create({
         data: {
           name: createUserDto.name,
           username: createUserDto.username,
@@ -22,7 +22,6 @@ export class UserService {
           email
         }
       })
-      return res;
     } catch (e) {
       console.log(e)
       if (e instanceof PrismaClientKnownRequestError) {
@@ -47,15 +46,36 @@ export class UserService {
     return `This action returns all user`;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
+  async findOne(id: string) {
+    return this.prisma.user.findFirst({
+      where: {
+        user_id: id
+      },
+      select: {
+        user_id: true,
+        name: true,
+        username: true,
+        bio: true,
+      }
+    })
   }
 
-  update(id: number, userEmail: string) {
-    return `This action updates the user with email address of ${userEmail}`;
+  async update(updateUserDto: UpdateUserDto, @UserEmail() userEmail: string) {
+    return this.prisma.user.update({
+      where: {
+        email: userEmail
+      },
+      data: {
+        ...updateUserDto
+      },
+    })
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} user`;
+  async deleteUser(email: string) {
+    return this.prisma.user.delete({
+      where: {
+        email
+      }
+    })
   }
 }
