@@ -1,29 +1,37 @@
-import {Controller, Get, Post, Body, Patch, Param, Delete} from '@nestjs/common';
+import {Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, UsePipes} from '@nestjs/common';
 import {CommentService} from './comment.service';
 import {CreateCommentDto, UpdateCommentDto} from "@cat-hunter/types";
+import {AuthGuard} from "../auth.guard";
+import {ZodValidationPipe} from "nestjs-zod";
+import {UserEmail} from "../user-email.decorator";
 
-@Controller('comment')
+@Controller()
 export class CommentController {
   constructor(private readonly commentService: CommentService) {
   }
 
-  @Post()
-  create(@Body() createCommentDto: CreateCommentDto) {
-    return this.commentService.createComment(createCommentDto);
+  @Post(":post_id")
+  @UseGuards(AuthGuard)
+  @UsePipes(ZodValidationPipe)
+  create(@Param() post_id: string, @Body() createCommentDto: CreateCommentDto, @UserEmail() userEmail: string) {
+    return this.commentService.createComment(post_id, createCommentDto, userEmail);
   }
 
-  @Get()
-  findAll() {
-    return this.commentService.findCommentByPostId();
+  @Get(":post_id")
+  findAll(@Param() post_id: string) {
+    return this.commentService.findCommentsByPostId(post_id);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateCommentDto: UpdateCommentDto) {
-    return this.commentService.editComment(+id, updateCommentDto);
+  @Patch(':comment_id')
+  @UseGuards(AuthGuard)
+  @UsePipes(ZodValidationPipe)
+  update(@Param('comment_id') comment_id: string, @Body() updateCommentDto: UpdateCommentDto, @UserEmail() userEmail: string) {
+    return this.commentService.editComment(comment_id, updateCommentDto, userEmail);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.commentService.deleteComment(+id);
+  @Delete(':comment_id')
+  @UseGuards(AuthGuard)
+  remove(@Param('comment_id') comment_id: string, @UserEmail() userEmail: string) {
+    return this.commentService.deleteComment(comment_id, userEmail);
   }
 }
