@@ -4,6 +4,14 @@
 
 ---
 
+## Project structure
+
+- `cat-hunter` - Frontend application (Vite & React-ts)
+- `cat-hunter-backend` - Backend application (Nest.js)
+- `@cathunt/*` - Shared code between the frontend and backend (All in TypeScript)
+
+---
+
 ## Each technology used and its purposes
 
 - Docker*: To run the MySQL database in a container
