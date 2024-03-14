@@ -42,6 +42,14 @@ export class PostService {
 
     return this.prisma.post.findMany({
       where: filter,
+      include: {
+        user: {
+          select: {
+            name: true,
+            username: true
+          }
+        }
+      },
       orderBy: {
         created_at: 'desc'
       },
@@ -54,9 +62,30 @@ export class PostService {
         post_id: id
       },
 
-      select: {
-        comments: true,
-      }
+      include: {
+        user: {
+          select: {
+            name: true,
+            username: true
+          }
+        },
+
+        PostComments: {
+          select: {
+            comment: true,
+            comment_id: true,
+            created_at: true,
+            updated_at: true,
+            user: {
+              select: {
+                name: true,
+                username: true
+              }
+            }
+          },
+        },
+      },
+
     })
   }
 
