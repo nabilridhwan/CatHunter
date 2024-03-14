@@ -10,7 +10,6 @@ export const CreatePostSchema = z.object({
 })
 
 export const UpdatePostSchema = z.object({
-  post_id: z.string(),
   caption: z.string().optional(),
   location: z.object({
     lat: z.number().optional(),
