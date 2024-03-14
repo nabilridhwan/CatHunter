@@ -3,8 +3,8 @@ import {
 } from "amazon-cognito-identity-js"
 
 const poolData = {
-  UserPoolId: 'ap-southeast-1_MO91oKtAW', // Your user pool id here
-  ClientId: '3g7kko47585j4kbia7j3di5h2l', // Your client id here
+  UserPoolId: import.meta.env.VITE_AWS_COGNITO_USER_POOL_ID!, // Your user pool id here
+  ClientId: import.meta.env.VITE_AWS_COGNITO_CLIENT_ID!, // Your client id here
 
 };
 
