@@ -6,9 +6,12 @@
 
 ## Project structure
 
-- `cat-hunter` - Frontend application (Vite & React-ts)
-- `cat-hunter-backend` - Backend application (Nest.js)
-- `@cathunt/*` - Shared code between the frontend and backend (All in TypeScript)
+- `@cathunt/*`: Shared code between the frontend and backend (All in TypeScript)
+  - `types`: Shared types
+  - `api`: Shared API code (axios, etc.)
+- `apps/*`: Place for applications
+  - `web`: Frontend application (Vite & React-ts)
+  - `server`: Backend application (Nest.js)
 
 ---
 
@@ -38,13 +41,13 @@ To set up the database, you have two options:
 1. Create a database called `cathunter`
 2. Run the SQL in `prisma/generated.sql` to create the tables (init SQL script)
 
-## Run
+## Run the application
 
 1. Install dependencies by running `yarn`
 2. Set up the database (see above)
 3. Copy `.env.example` to `.env` and fill in the environment variables
 
 ```shell
-nx run cat-hunter:serve # Starts the frontend
-nx run cat-hunter-backend:serve:development # Starts the backend
+nx run web:serve # Starts the frontend
+nx run server:serve:development # Starts the backend
 ```
