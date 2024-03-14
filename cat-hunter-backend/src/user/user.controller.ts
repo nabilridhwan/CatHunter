@@ -1,4 +1,16 @@
-import {Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, UsePipes} from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  UseGuards,
+  UsePipes,
+  HttpException,
+  NotFoundException
+} from '@nestjs/common';
 import {UserService} from './user.service';
 import {AuthGuard} from "../auth.guard";
 import {UserEmail} from "../user-email.decorator";
@@ -19,7 +31,17 @@ export class UserController {
    * @param userEmail - the email of the user from the JWT token
    */
   create(@Body() createUserDto: CreateUserDto, @UserEmail() userEmail: string) {
-    return this.userService.create(createUserDto, userEmail);
+    try {
+
+      return this.userService.create(createUserDto, userEmail);
+    } catch (e) {
+
+      if (e instanceof HttpException) {
+        return e;
+      }
+
+      throw new HttpException('Something went wrong', 500);
+    }
   }
 
 
@@ -29,8 +51,15 @@ export class UserController {
    * API Route to get the user details by email (basically a /api/me route). Includes sensitive information.
    * @param userEmail
    */
-  findMe(@UserEmail() userEmail: string) {
-    return this.userService.findByEmail(userEmail);
+  async findMe(@UserEmail() userEmail: string) {
+
+    const user = await this.userService.findByEmail(userEmail);
+
+    if (!user) {
+      throw new NotFoundException('User not found')
+    }
+
+    return user;
   }
 
   @Get(':id')
