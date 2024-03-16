@@ -6,33 +6,9 @@ import {useQuery} from "@tanstack/react-query";
 import {getMe, UserQueryKeys} from "@cat-hunter/api";
 import {AxiosError} from "axios";
 import {redirect} from "react-router-dom";
+import {useMe} from "./hooks/useMe";
 
 function App() {
-  const {accessToken, refreshToken} = useAuth();
-
-  const {
-    data: meData,
-    error: meError,
-  } = useQuery({
-    queryKey: UserQueryKeys.ME,
-    queryFn: () => getMe(),
-    enabled: !!accessToken,
-  });
-
-  useEffect(() => {
-
-    if (meError && meError instanceof AxiosError) {
-
-      // If the error is a 404, the user is not found meaning that they are not signed up, so we should redirect them to the onboarding page
-      if (meError.response?.status === 404) {
-        console.log("Redirecting")
-        window.location.href = '/welcome'
-        return;
-      }
-
-    }
-  }, [meError, meData])
-
   return (
     <Container maxW={'4xl'} my={10}>
       <Stack>
