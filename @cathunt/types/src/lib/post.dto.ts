@@ -2,7 +2,7 @@ import {z} from 'zod'
 import {createZodDto} from "nestjs-zod";
 
 export const CreatePostSchema = z.object({
-  caption: z.string(),
+  caption: z.string().min(1).max(300),
   location: z.object({
     lat: z.number(),
     long: z.number(),
