@@ -1,10 +1,10 @@
-import { Button, Container, Input, Link, Stack, Text } from '@chakra-ui/react';
-import { AuthenticationDetails, CognitoUser } from 'amazon-cognito-identity-js';
-import { useFormik } from 'formik';
-import { useAuth } from '../hooks/useAuth';
+import {Button, Container, Input, Link, Stack, Text} from '@chakra-ui/react';
+import {AuthenticationDetails, CognitoUser} from 'amazon-cognito-identity-js';
+import {useFormik} from 'formik';
+import {useAuth} from '../hooks/useAuth';
 import userPool from '../auth/userPool';
-import { useScroll } from 'framer-motion';
-import { useState } from 'react';
+import {useScroll} from 'framer-motion';
+import {useState} from 'react';
 
 const initialValues = {
   email: '',
@@ -12,7 +12,7 @@ const initialValues = {
 };
 
 export const Login = () => {
-  const { setAccessToken, setRefreshToken } = useAuth();
+  const {setAccessToken, setRefreshToken, setSession} = useAuth();
 
   const [error, setError] = useState();
 
@@ -31,6 +31,7 @@ export const Login = () => {
       onSuccess: (session) => {
         setAccessToken(session.getAccessToken().getJwtToken());
         setRefreshToken(session.getRefreshToken().getToken());
+        setSession(session);
 
         console.log(session, cognitoUser);
 
@@ -49,7 +50,7 @@ export const Login = () => {
     });
   };
 
-  const { values, setFieldValue, handleSubmit, isValid, dirty } = useFormik({
+  const {values, setFieldValue, handleSubmit, isValid, dirty} = useFormik({
     initialValues,
     onSubmit: login,
   });
