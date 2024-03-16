@@ -26,7 +26,7 @@ export function deletePost(post_id: string) {
 }
 
 export function getPostComments(post_id: string) {
-  return $a.get<z.infer<typeof PostCommentsResponseSchema>>(`/api/post/comment/${post_id}`);
+  return $a.get<z.infer<typeof PostCommentsResponseSchema>>(`/api/post/${post_id}/comment`);
 }
 
 

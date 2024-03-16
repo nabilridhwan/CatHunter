@@ -9,15 +9,16 @@ import {
   UseGuards,
   UsePipes,
 } from '@nestjs/common';
-import { CommentService } from './comment.service';
-import { CreateCommentDto, UpdateCommentDto } from '@cat-hunter/types';
-import { AuthGuard } from '../auth.guard';
-import { ZodValidationPipe } from 'nestjs-zod';
-import { UserEmail } from '../user-email.decorator';
+import {CommentService} from './comment.service';
+import {CreateCommentDto, UpdateCommentDto} from '@cat-hunter/types';
+import {AuthGuard} from '../auth.guard';
+import {ZodValidationPipe} from 'nestjs-zod';
+import {UserEmail} from '../user-email.decorator';
 
 @Controller()
 export class CommentController {
-  constructor(private readonly commentService: CommentService) {}
+  constructor(private readonly commentService: CommentService) {
+  }
 
   @Post(':post_id')
   @UseGuards(AuthGuard)
@@ -32,11 +33,6 @@ export class CommentController {
       createCommentDto,
       userEmail
     );
-  }
-
-  @Get(':post_id')
-  findAll(@Param('post_id') post_id: string) {
-    return this.commentService.findCommentsByPostId(post_id);
   }
 
   @Patch(':comment_id')

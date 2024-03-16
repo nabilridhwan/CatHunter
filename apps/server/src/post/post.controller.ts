@@ -11,16 +11,18 @@ import {
   UseGuards,
   NotFoundException,
 } from '@nestjs/common';
-import { PostService } from './post.service';
-import { CreatePostDto, UpdatePostDto } from '@cat-hunter/types';
-import { UseZodGuard, ZodValidationPipe } from 'nestjs-zod';
-import { GetAllPostsDto } from '@cat-hunter/types';
-import { UserEmail } from '../user-email.decorator';
-import { AuthGuard } from '../auth.guard';
+import {PostService} from './post.service';
+import {CreatePostDto, UpdatePostDto} from '@cat-hunter/types';
+import {UseZodGuard, ZodValidationPipe} from 'nestjs-zod';
+import {GetAllPostsDto} from '@cat-hunter/types';
+import {UserEmail} from '../user-email.decorator';
+import {AuthGuard} from '../auth.guard';
+import {CommentService} from "../comment/comment.service";
 
 @Controller()
 export class PostController {
-  constructor(private readonly postService: PostService) {}
+  constructor(private readonly postService: PostService, private readonly commentService: CommentService) {
+  }
 
   @Post()
   @UseGuards(AuthGuard)
@@ -38,6 +40,15 @@ export class PostController {
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.postService.findOnePost(id);
+  }
+
+  @Get(":id/comment")
+  /**
+   * Get all comments for a post
+   * @param post_id
+   */
+  getAllPostComments(@Param('post_id') post_id: string) {
+    return this.commentService.findCommentsByPostId(post_id);
   }
 
   @Patch(':id')
