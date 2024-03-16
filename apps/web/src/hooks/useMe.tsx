@@ -17,9 +17,16 @@ export function useMe() {
   });
 
   if (query.error && query.error instanceof AxiosError) {
+    //   Redirect to login screen
     if (query.error.response?.status === 403) {
-      //   Redirect to login screen
+      console.log("[useMe] Redirecting to login screen")
       window.location.href = '/login'
+    }
+
+    //   Redirect to welcome screen
+    if (query.error.response?.status === 404) {
+      console.log("[useMe] Redirecting to welcome screen")
+      window.location.href = '/welcome'
     }
   }
 
